@@ -1,13 +1,18 @@
-import dotenv from "dotenv"
-dotenv.config()
-import express from "express"
+const express = require('express')
+const mysql  = require('mysql2/promise')
+require('dotenv').config()
 
-let app = express()
+const app = express()
 
-app.get("/", (req, res) =>{
-    return res.send("Müködik a szerver.")
-})
+app.use(express.json())
 
-app.listen(8080, () =>{
-    console.log("Listening on: \nhttp://localhost:8080/")
+const PORT = process.env.PORT || 8080
+
+
+const dbPool = mysql.createPool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT,
 })
